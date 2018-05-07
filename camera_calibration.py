@@ -17,11 +17,11 @@ img_points = []
 ind_points = 0
 cnt_images = 0
 
-is_inf = 0
+is_inf = 1
 
 images = glob.glob("path for images\*.jpg")
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
 
 #for fname in images:
     #img = cv2.imread(fname)
@@ -92,7 +92,7 @@ impl = minidom.getDOMImplementation()
 dom = impl.createDocument(None, 'calibration', None)
 root = dom.documentElement
 cali = dom.createElement('matrix')
-cali.setAttribute('id', is_inf)
+cali.setAttribute('id', str(is_inf))
 root.appendChild(cali)
 
 mat = dom.createElement('mat')
@@ -112,7 +112,12 @@ dis_data = dom.createTextNode(str(dist[0,0])+','+
 dis.appendChild(dis_data)
 cali.appendChild(dis)
 
-with open(os.getcwd() + '\\calibration.xml','w') as f:
+if not is_inf:
+    fn = os.getcwd() + '\\calibration.xml'
+else:
+    fn = os.getcwd() + '\\calibration_inf.xml'
+
+with open(fn, 'a') as f:
     dom.writexml(f, addindent=' ', newl='\n')
 
 
